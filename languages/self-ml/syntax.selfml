@@ -1,0 +1,46 @@
+(root source.self-ml
+    (zone comment.line.number-sign.selfml
+        (match
+            (regex [(#).*$\n?]
+                (1 punctuation.definition.comment.selfml))))
+    (zone string.quoted.backtick.selfml
+        (start
+            (regex [`]
+                (1 punctuation.definition.string.begin.selfml)))
+        (end
+            (regex [`]
+                (1 punctuation.definition.string.end.selfml)))
+        (subzones
+            (zone constant.character.escape
+                (match [``]))))
+    (zone keyword.selfml
+        (match
+            (regex [(?x)
+	(?<=(\()) # preceded by space or (
+	[^ \s\(\)\[\]\{\}#]+
+	(?=(\s|\)|\()) # followed by space or (
+])))
+    (include @bcomment)
+    (include @bstring))
+
+(collection bstring
+    (zone string.quoted.bracket.selfml
+        (start
+            (regex `\[`
+                (1 punctuation.definition.string.begin.selfml)))
+        (end
+            (regex `\]`
+                (1 punctuation.definition.string.end.selfml)))
+        (subzones
+            (include @bstring))))
+
+(collection bcomment
+    (zone comment.block.selfml
+        (start
+            (regex [\{#]
+                (0 punctuation.definition.comment.selfml)))
+        (end
+            (regex [#\}]
+                (0 punctuation.definition.comment.selfml)))
+        (subzones
+            (include @bcomment))))

@@ -1,0 +1,6 @@
+(detector
+    (extension selfml))
+
+(folding
+    (start [(])
+    (stop [)]))
